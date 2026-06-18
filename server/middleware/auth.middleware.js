@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const authMiddleware = (req, res, next) => {
 
   // 1. Get the token from the request header
-  // Frontend sends it as:  Authorization: Bearer eyJhbGci...
   const authHeader = req.headers['authorization']
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -17,7 +16,6 @@ const authMiddleware = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
     // 3. Attach the decoded user info to the request object
-    // Now any route that uses this middleware can access req.user
     req.user = decoded
 
     // 4. Move on to the actual route handler

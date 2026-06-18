@@ -4,30 +4,29 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
 mongoose.connect('mongodb://127.0.0.1:27017/amdx_erp')
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Error:', err));
+
+// Simple test route
+app.get('/test', (req, res) => {
+  res.json({ message: 'Test route working!' });
+});
 
 // Import routes
 const projectRoutes = require('./routes/project.routes');
 const taskRoutes = require('./routes/task.routes');
 
-// Use routes
 app.use('/api', projectRoutes);
 app.use('/api', taskRoutes);
 
-// Test route
 app.get('/', (req, res) => {
   res.json({ message: 'Amdox ERP API is running!' });
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:3000`);
